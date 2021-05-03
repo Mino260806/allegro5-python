@@ -2,7 +2,7 @@
     Allegro Python port game example
     Original Author: Jeroen De Busser
 """
-from allegro5 import *
+from ..allegro import *
 from random import randint, random
 import os
 

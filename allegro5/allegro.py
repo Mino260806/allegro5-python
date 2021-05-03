@@ -47,9 +47,17 @@ elif os.name == "posix":
 else:
     raise OSError('Unknown operating system')
 
+files =[]
 for file in os.listdir(_dir):
     if os.path.splitext(file)[1] == _dll_ext and 'debug' not in file:
-        _add_dll(os.path.join(_dir, file))
+        files.append(file)
+
+# there is no need to load other dlls if directory contains a monolith
+m = list(filter(lambda x: 'monolith' in x, files))
+if m:
+    _add_dll(os.path.join(_dir, m[0]))
+else:
+    [_add_dll(os.path.join(_dir, file)) for file in files]
 
 if not _dlls:
     raise FileNotFoundError("No valid dll found in the specified dlls directory")
@@ -600,7 +608,7 @@ ALLEGRO_VIDEO_POSITION_AUDIO_DECODE = 2
 ALLEGRO_VIDEO_POSITION_VIDEO_DECODE = 1
 ALLEGRO_VSYNC = 26
 ALLEGRO_WINDOWED = 1
-ALLEGRO_WIP_VERSION = 8
+ALLEGRO_WIP_VERSION = 7
 ALLEGRO_WRITE_MASK = 17
 ALLEGRO_ZERO = 0
 _ALLEGRO_ALPHA_TEST = 16
@@ -1861,6 +1869,10 @@ al_wait_for_vsync = _dll("al_wait_for_vsync", c_bool, [])
 al_win_add_window_callback = _dll("al_win_add_window_callback", c_bool, [LP_ALLEGRO_DISPLAY, c_void_p, c_void_p])
 al_win_remove_window_callback = _dll("al_win_remove_window_callback", c_bool, [LP_ALLEGRO_DISPLAY, c_void_p, c_void_p])
 
+ALLEGRO_VERSION_INT = \
+    ((ALLEGRO_VERSION << 24) | (ALLEGRO_SUB_VERSION << 16) | \
+    (ALLEGRO_WIP_VERSION << 8) | ALLEGRO_RELEASE_NUMBER)
+
 al_current_time = al_get_time
 al_event_queue_is_empty = al_is_event_queue_empty
 atexit = CDLL('msvcrt').atexit
@@ -1873,10 +1885,6 @@ ALLEGRO_MSECS_TO_SECS = lambda x: ((x) / 1000.0)
 ALLEGRO_BPS_TO_SECS = lambda x: (1.0 / (x))
 ALLEGRO_BPM_TO_SECS = lambda x: (60.0 / (x))
 
-ALLEGRO_VERSION_INT = \
-    ((ALLEGRO_VERSION << 24) | (ALLEGRO_SUB_VERSION << 16) | \
-    (ALLEGRO_WIP_VERSION << 8) | ALLEGRO_RELEASE_NUMBER)
-    
 # work around bug http://gcc.gnu.org/bugzilla/show_bug.cgi?id=36834
 if os.name == "nt":
     def al_map_rgba_f(r, g, b, a): return ALLEGRO_COLOR(r, g, b, a)
