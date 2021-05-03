@@ -9,7 +9,7 @@ setuptools.setup(
     version="1.0.5",
     author="Amin Guermazi",
     author_email="mino260806@gmail.com",
-    description="Allegro 5 C library wrapped in Python",
+    description="Allegro 5 game development library (originaly in C) wrapped in Python",
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=setuptools.find_packages(),
