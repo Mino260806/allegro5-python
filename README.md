@@ -11,7 +11,13 @@ This is the official allegro 5 wrapper in python. It was built from the [officia
 Demo script
 ----
 ```py
-from allegro import *
+import os
+
+os.environ['ALLEGRO5_DLL'] = r'path\to\allegro5\dlls'
+os.environ['ALLEGRO5_VERSION'] = '5.0.10' # this is just an example
+
+from allegro5 import *
+
 al_run_demo()
 ```
 
