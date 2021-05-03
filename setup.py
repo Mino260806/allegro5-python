@@ -18,7 +18,7 @@ setuptools.setup(
         "License :: OSI Approved :: zlib/libpng License",
         "Operating System :: OS Independent",
     ],
-    url="https://github.com/liballeg/allegro5/tree/5.0.10-pre/python",
+    url="https://github.com/liballeg/allegro5/",
     python_requires='>=3.6',
     data_files=[
 #        (r'lib\site-packages\allegro5',[os.path.dirname(__file__) + r'\allegro5\allegro-5.0.10-monolith-mt.dll']),

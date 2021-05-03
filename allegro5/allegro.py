@@ -2,6 +2,20 @@
 import os, platform, sys
 from ctypes import *
 from ctypes.util import *
+import re
+
+
+# If we won't specify the correct allegro version al_install_system will fail
+if 'ALLEGRO5_VERSION' not in os.environ:
+    raise ValueError('You must specify allegro5 version you are using (format 5.x.x)')
+
+v = os.environ['ALLEGRO5_VERSION']
+m = re.match(r'5\.(\d+)\.(\d)+', v)
+if not m:
+    raise ValueError('ALLEGRO5_VERSION must follow the format 5.x.x')
+
+ALLEGRO_WIP_VERSION = int(m.group(2))
+ALLEGRO_SUB_VERSION = int(m.group(1))
 
 if 'ALLEGRO5_DLL' not in os.environ:
     advise = ''
@@ -76,7 +90,7 @@ def _dll(func, ret, params):
                 if sys.version_info[0] > 2: return lambda *x: f(*x).decode("utf8")
             return f
         except AttributeError: pass
-    sys.stderr.write("Cannot find function " + func + "\n")
+    #sys.stderr.write("Cannot find function " + func + "\n")
     return lambda *args: None
 
 # In Python3, all Python strings are unicode so we have to convert to
@@ -551,7 +565,6 @@ ALLEGRO_STATE_TARGET_BITMAP = 8
 ALLEGRO_STATE_TRANSFORM = 64
 ALLEGRO_STENCIL_SIZE = 16
 ALLEGRO_STEREO = 12
-ALLEGRO_SUB_VERSION = 2
 ALLEGRO_SUGGEST = 2
 ALLEGRO_SUPPORTED_ORIENTATIONS = 32
 ALLEGRO_SUPPORT_NPOT_BITMAP = 28
@@ -608,7 +621,6 @@ ALLEGRO_VIDEO_POSITION_AUDIO_DECODE = 2
 ALLEGRO_VIDEO_POSITION_VIDEO_DECODE = 1
 ALLEGRO_VSYNC = 26
 ALLEGRO_WINDOWED = 1
-ALLEGRO_WIP_VERSION = 7
 ALLEGRO_WRITE_MASK = 17
 ALLEGRO_ZERO = 0
 _ALLEGRO_ALPHA_TEST = 16

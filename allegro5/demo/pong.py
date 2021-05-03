@@ -160,7 +160,11 @@ def main():
     #Initialisation
     difficulty = int(input("What difficulty do you want to play on?\n" +
         "Input: 0 for two-player mode, 1-4 for AI difficulty setting.\n"))
-    al_init()
+    
+    #May fail in case you haven't setup the correct version
+    if not al_init():
+        raise RuntimeError("allegro5 failed to init")
+        exit(-1)
     
     w, h = 800, 600
     #Make lines draw smoother
