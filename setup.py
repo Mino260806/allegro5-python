@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="allegro5",
-    version="1.0.5",
+    version="1.0.6",
     author="Amin Guermazi",
     author_email="mino260806@gmail.com",
     description="Allegro 5 game development library (originaly in C) wrapped in Python",
